@@ -1,19 +1,5 @@
 use crate::Pose;
-
-#[derive(Default, Debug, Clone, Copy)]
-pub struct State {
-    is_reverse: bool,
-}
-
-impl State {
-    pub fn toggle_reverse(&mut self) {
-        self.is_reverse = !self.is_reverse;
-    }
-
-    pub fn is_reverse(&self) -> bool {
-        self.is_reverse
-    }
-}
+use crate::state::State;
 
 pub struct Executor {
     pose: Pose,
@@ -30,31 +16,13 @@ impl Executor {
         for cmd in cmds.chars() {
             match cmd {
                 'B'=> self.state.toggle_reverse(),
-                
-                'M' => {
-                    if self.state.is_reverse(){
-                        self.pose.backward();
-                    }else{
-                        self.pose.forward();
+
+                _ => {
+                    let actions = self.state.assemble(cmd);
+                    for action in actions{
+                        action.perform(&mut self.pose);
                     }
                 },
-
-                'L' => {
-                    if self.state.is_reverse(){
-                        self.pose.turn_right();
-                    }else{
-                        self.pose.turn_left();
-                    }
-                }
-
-                'R' => {
-                    if self.state.is_reverse(){
-                        self.pose.turn_left();
-                    }else{
-                        self.pose.turn_right();
-                    }
-                },
-                _ => (),
             }
         }
     }

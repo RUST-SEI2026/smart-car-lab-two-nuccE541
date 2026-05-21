@@ -11,12 +11,12 @@ impl Pose {
         Pose { x, y, heading }
     }
 
-    pub(crate) fn forward(&mut self){
+    pub(crate) fn forward(&mut self, offset:i32){
         match self.heading {
-            'E' => self.x += 1,
-            'S' => self.y -= 1,
-            'W' => self.x -= 1,
-            'N' => self.y += 1,
+            'E' => self.x += offset,
+            'S' => self.y -= offset,
+            'W' => self.x -= offset,
+            'N' => self.y += offset,
             _ => (),
         }
     }
@@ -37,16 +37,6 @@ impl Pose {
             'S' => self.heading = 'W',
             'W' => self.heading = 'N',
             'N' => self.heading = 'E',
-            _ => (),
-        }
-    }
-
-    pub(crate) fn backward(&mut self){
-        match self.heading {
-            'E' => self.x -= 1,
-            'S' => self.y += 1,
-            'W' => self.x += 1,
-            'N' => self.y -= 1,
             _ => (),
         }
     }
