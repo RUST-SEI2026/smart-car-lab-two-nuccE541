@@ -1,25 +1,4 @@
-#[derive(Debug, Copy, Clone, PartialEq)]
-pub struct Pose {
-    pub x: i32,
-    pub y: i32,
-    pub heading: char,
-}
-
-impl Pose {
-    pub fn new(x: i32, y: i32, heading: char) -> Self {
-        Pose { x, y, heading }
-    }
-}
-
-impl Default for Pose {
-    fn default() -> Self {
-        Pose {
-            x: 0,
-            y: 0,
-            heading: 'N',
-        }
-    }
-}
+use crate::Pose;
 
 pub struct Executor {
     pose: Pose,
@@ -39,61 +18,25 @@ impl Executor {
                 
                 'M' => {
                     if self.is_reverse{
-                        match self.pose.heading {
-                        'E' => self.pose.x -= 1,
-                        'S' => self.pose.y += 1,
-                        'W' => self.pose.x += 1,
-                        'N' => self.pose.y -= 1,
-                        _ => (),
-                        }
+                        self.pose.backward();
                     }else{
-                        match self.pose.heading {
-                        'E' => self.pose.x += 1,
-                        'S' => self.pose.y -= 1,
-                        'W' => self.pose.x -= 1,
-                        'N' => self.pose.y += 1,
-                        _ => (),
-                        }
+                        self.pose.forward();
                     }
                 },
 
                 'L' => {
                     if self.is_reverse{
-                        match self.pose.heading {
-                            'E' => self.pose.heading = 'S',
-                            'S' => self.pose.heading = 'W',
-                            'W' => self.pose.heading = 'N',
-                            'N' => self.pose.heading = 'E',
-                            _ => (),
-                        }
+                        self.pose.turn_right();
                     }else{
-                        match self.pose.heading {
-                            'E' => self.pose.heading = 'N',
-                            'S' => self.pose.heading = 'E',
-                            'W' => self.pose.heading = 'S',
-                            'N' => self.pose.heading = 'W',
-                            _ => (),
-                            }
-                        }
-                    },
+                        self.pose.turn_left();
+                    }
+                }
 
                 'R' => {
                     if self.is_reverse{
-                    match self.pose.heading {
-                        'E' => self.pose.heading = 'N',
-                        'S' => self.pose.heading = 'E',
-                        'W' => self.pose.heading = 'S',
-                        'N' => self.pose.heading = 'W',
-                        _ => (),
-                    }
+                        self.pose.turn_left();
                     }else{
-                        match self.pose.heading {
-                        'E' => self.pose.heading = 'S',
-                        'S' => self.pose.heading = 'W',
-                        'W' => self.pose.heading = 'N',
-                        'N' => self.pose.heading = 'E',
-                        _ => (),
-                         }
+                        self.pose.turn_right();
                     }
                 },
                 _ => (),
