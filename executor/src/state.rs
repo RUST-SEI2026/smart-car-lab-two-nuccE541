@@ -1,13 +1,24 @@
+use crate::action;
+
 use super::action::Action;
 
 #[derive(Default, Debug, Clone, Copy)]
 pub(crate)struct State {
     is_reverse: bool,
+    is_fast: bool,
 }
 
 impl State {
     pub(crate) fn toggle_reverse(&mut self) {
         self.is_reverse = !self.is_reverse;
+    }
+
+    pub(crate) fn toggle_fast(&mut self) {
+        self.is_fast = !self.is_fast;
+    }
+
+    pub(crate) fn is_fast(&self) -> bool {
+        self.is_fast
     }
 
     pub(crate) fn is_reverse(&self) -> bool {
@@ -16,11 +27,30 @@ impl State {
 
     
     pub(crate) fn assemble(&self, cmd: char) -> Vec<Action> {
+        let mut actions = Vec::new();
         match cmd {
-            'M' => self.move_assemble(),
-            'L' => self.turn_left_assemble(),
-            'R' => self.turn_right_assemble(),
-            _ => Vec::new(),
+            'M' => {
+                if self.is_fast{
+                    actions.extend(self.move_assemble());
+                }
+                actions.extend(self.move_assemble());
+                actions
+            },
+            'L' => {
+                if self.is_fast{
+                   actions.extend(self.move_assemble());
+                }
+                actions.extend(self.turn_left_assemble());
+                actions
+            },
+            'R' => {
+                if self.is_fast{
+                    actions.extend(self.move_assemble());
+                }
+                actions.extend(self.turn_right_assemble());
+                actions
+            },
+            _ => actions,
         }
     }
 

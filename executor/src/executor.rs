@@ -16,7 +16,7 @@ impl Executor {
         for cmd in cmds.chars() {
             match cmd {
                 'B'=> self.state.toggle_reverse(),
-
+                'F'=> self.state.toggle_fast(),
                 _ => {
                     let actions = self.state.assemble(cmd);
                     for action in actions{
