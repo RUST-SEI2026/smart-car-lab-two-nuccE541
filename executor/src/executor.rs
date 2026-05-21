@@ -1,23 +1,38 @@
 use crate::Pose;
 
+#[derive(Default, Debug, Clone, Copy)]
+pub struct State {
+    is_reverse: bool,
+}
+
+impl State {
+    pub fn toggle_reverse(&mut self) {
+        self.is_reverse = !self.is_reverse;
+    }
+
+    pub fn is_reverse(&self) -> bool {
+        self.is_reverse
+    }
+}
+
 pub struct Executor {
     pose: Pose,
-    is_reverse: bool,
+    state: State,
 }
 
 impl Executor {
     pub fn with_pose(pose: Pose) -> Self {
         Executor { pose,
-        is_reverse: false, }
+        state: State::default(),}
     }
 
     pub fn execute(&mut self, cmds: &str) {
         for cmd in cmds.chars() {
             match cmd {
-                'B'=> self.is_reverse = !self.is_reverse,
+                'B'=> self.state.toggle_reverse(),
                 
                 'M' => {
-                    if self.is_reverse{
+                    if self.state.is_reverse(){
                         self.pose.backward();
                     }else{
                         self.pose.forward();
@@ -25,7 +40,7 @@ impl Executor {
                 },
 
                 'L' => {
-                    if self.is_reverse{
+                    if self.state.is_reverse(){
                         self.pose.turn_right();
                     }else{
                         self.pose.turn_left();
@@ -33,7 +48,7 @@ impl Executor {
                 }
 
                 'R' => {
-                    if self.is_reverse{
+                    if self.state.is_reverse(){
                         self.pose.turn_left();
                     }else{
                         self.pose.turn_right();
