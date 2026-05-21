@@ -218,7 +218,7 @@ mod back_state_tests {
         let mut executor = Executor::with_pose(original_pose);
         
         // when
-        executor.execute("L");
+        executor.execute("BL");
 
         // then
         let expected_pose = Pose::new(0, 0, 'S');
@@ -233,7 +233,7 @@ mod back_state_tests {
         let mut executor = Executor::with_pose(original_pose);
         
         // when
-        executor.execute("L");
+        executor.execute("BR");
 
         // then
         let expected_pose = Pose::new(0, 0, 'N');
